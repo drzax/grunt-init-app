@@ -2,16 +2,21 @@
     "curly": true,
     "eqeqeq": true,
     "immed": true,
-    "latedef": true,
+    "latedef": false,
     "newcap": true,
     "noarg": true,
     "sub": true,
     "undef": true,
     "boss": true,
     "eqnull": true,
-    "es5": true,
+    "es5": false,
+    "strict": false,
     "evil": true,
     "node": true,
     "browser": true,
-    "strict": false
+    "globals": {
+        "$": false,
+        "d3": false
+    },
+    "smarttabs": true
 }
