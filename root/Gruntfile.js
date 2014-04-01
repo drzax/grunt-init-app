@@ -20,6 +20,9 @@ module.exports = function(grunt) {
 		},
 
 		browserify: {
+			options: {
+				transform: ['brfs', 'deglobalify']
+			},
 			dev: {
 				options: {
 					debug: true
@@ -35,15 +38,26 @@ module.exports = function(grunt) {
 			}
 		},
 
-		stylus: {
-			dev: {
-				files: {
-					'.dev/css/app.css': 'src/css/app.styl'
-				}
-			},
+		uglify: {
 			dist: {
 				files: {
-					'dist/css/app.css': 'src/css/app.styl'
+					'dist/js/app.js': ['dist/js/app.js']
+				}
+			}
+		},
+
+		compass: {
+			dist: {
+				options: {
+					sassDir: 'src/scss',
+					cssDir: 'dist/css',
+					environment: 'production'
+				}
+			},
+			dev: {
+				options: {
+					sassDir: 'src/sass',
+					cssDir: '.dev/css'
 				}
 			}
 		},
@@ -138,17 +152,18 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-browserify');
-	grunt.loadNpmTasks('grunt-contrib-stylus');
+	grunt.loadNpmTasks('grunt-contrib-compass');
 	grunt.loadNpmTasks('grunt-dir2json');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
 	grunt.registerTask('dev', [
 		'clean:dev',
 		'jshint',
 		'browserify:dev',
-		'stylus:dev',
+		'compass:dev',
 		'dir2json:dev',
 		'copy:filesdev',
 		'copy:rootdev'
@@ -164,7 +179,8 @@ module.exports = function(grunt) {
 		'clean:dist',
 		'jshint',
 		'browserify:dist',
-		'stylus:dist',
+		'uglify:dist',
+		'compass:dist',
 		'dir2json:dist',
 		'copy:files',
 		'copy:root'
