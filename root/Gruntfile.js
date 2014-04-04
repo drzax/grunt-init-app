@@ -56,7 +56,7 @@ module.exports = function(grunt) {
 			},
 			dev: {
 				options: {
-					sassDir: 'src/sass',
+					sassDir: 'src/scss',
 					cssDir: '.dev/css'
 				}
 			}
@@ -126,8 +126,8 @@ module.exports = function(grunt) {
 				interrupt: true
 			},
 			css: {
-				files: 'src/css/**/*.styl',
-				tasks: 'stylus:dev',
+				files: 'src/scss/**/*.scss',
+				tasks: 'compass:dev',
 				interrupt: true
 			},
 			data: {
