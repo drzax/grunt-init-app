@@ -1,24 +1,21 @@
-#Col App Project Template
+# ABC App Project Template
 
-My personal grunt-init app template
+A grunt init app suitable for some work stuff.
 
-##Dependencies
+## Dependencies
 
 `sudo npm install -g grunt-init`
 
-##Installation
+## Installation
 
-`git clone git@github.com:colingourlay/grunt-init-col-app.git ~/.grunt-init/col-app`
+`git clone git@github.com:drzax/grunt-init-app.git ~/.grunt-init/quick-start`
 
-##Usage
+## Usage
 
 ```
 mkdir app-dir
 cd app-dir
-grunt-init col-app
+grunt-init quick-start
 npm install
 
 ```
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/colingourlay/grunt-init-col-app/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
