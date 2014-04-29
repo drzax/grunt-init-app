@@ -11,11 +11,14 @@ module.exports = function(grunt) {
 		},
 
 		jshint: {
-			files: [
-				'src/js/**/*.js'
-			],
 			options: {
 				jshintrc: '.jshintrc'
+			},
+			gruntfile: {
+				files: 'Gruntfile.js'
+			},
+			js: {
+				files: 'src/js/**/*.js'
 			}
 		},
 
@@ -120,9 +123,14 @@ module.exports = function(grunt) {
 		},
 
 		watch: {
+			gruntfile: {
+				files: 'Gruntfile.js',
+				tasks: ['jshint:gruntfile'],
+				interrupt: true
+			}
 			js: {
 				files: 'src/js/**/*',
-				tasks: ['jshint', 'browserify:dev'],
+				tasks: ['jshint:js', 'browserify:dev'],
 				interrupt: true
 			},
 			css: {
@@ -161,7 +169,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('dev', [
 		'clean:dev',
-		'jshint',
+		'jshint:js',
 		'browserify:dev',
 		'compass:dev',
 		'dir2json:dev',
@@ -177,7 +185,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('dist', [
 		'clean:dist',
-		'jshint',
+		'jshint:js',
 		'browserify:dist',
 		'uglify:dist',
 		'compass:dist',
