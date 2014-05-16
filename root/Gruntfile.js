@@ -6,8 +6,16 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 
 		clean: {
-			dev: ['.dev'],
-			dist: ['dist']
+			build: ['build']
+		},
+
+		version: {
+			js: {
+				options: {
+					prefix: '@version\\s*'
+				},
+				src: ['src/js/**/*.js','src/scss/**/*.scss']
+			}
 		},
 
 		jshint: {
@@ -31,20 +39,23 @@ module.exports = function(grunt) {
 					debug: true
 				},
 				files: {
-					'.dev/js/app.js': ['src/js/app.js']
+					'build/js/app.js': ['src/js/app.js']
 				}
 			},
 			dist: {
 				files: {
-					'dist/js/app.js': ['src/js/app.js']
+					'build/js/app.js': ['src/js/app.js']
 				}
 			}
 		},
 
 		uglify: {
 			dist: {
+				options: {
+					preserveComments: 'some'
+				},
 				files: {
-					'dist/js/app.js': ['dist/js/app.js']
+					'build/js/app.js': ['build/js/app.js']
 				}
 			}
 		},
@@ -53,53 +64,25 @@ module.exports = function(grunt) {
 			dist: {
 				options: {
 					sassDir: 'src/scss',
-					cssDir: 'dist/css',
+					cssDir: 'build/css',
 					environment: 'production'
 				}
 			},
 			dev: {
 				options: {
 					sassDir: 'src/scss',
-					cssDir: '.dev/css'
+					cssDir: 'build/css'
 				}
 			}
 		},
 
-		dir2json: {
-			dev: {
-				root: 'src/data/',
-				dest: '.dev/data/data.json',
-				options: { space: '\t' }
-			},
-			dist: {
-				root: 'src/data/',
-				dest: 'dist/data/data.json'
-			}
-		},
-
 		copy: {
-			filesdev: {
-				files: [{
-					expand: true,
-					cwd: 'src/files',
-					src: ['**'],
-					dest: '.dev/files/'
-				}]
-			},
 			files: {
 				files: [{
 					expand: true,
-					cwd: 'src/files',
+					cwd: 'src/files/',
 					src: ['**'],
-					dest: 'dist/files/'
-				}]
-			},
-			rootdev: {
-				files: [{
-					expand: true,
-					cwd: 'src/',
-					src: ['*.*'],
-					dest: '.dev/'
+					dest: 'build/files/'
 				}]
 			},
 			root: {
@@ -107,7 +90,7 @@ module.exports = function(grunt) {
 					expand: true,
 					cwd: 'src/',
 					src: ['*.*'],
-					dest: 'dist/'
+					dest: 'build/'
 				}]
 			}
 		},
@@ -117,7 +100,7 @@ module.exports = function(grunt) {
 				options: {
 					port: 8000,
 					hostname: '*',
-					base: '.dev/'
+					base: 'build/'
 				}
 			}
 		},
@@ -127,7 +110,7 @@ module.exports = function(grunt) {
 				files: 'Gruntfile.js',
 				tasks: ['jshint:gruntfile'],
 				interrupt: true
-			}
+			},
 			js: {
 				files: 'src/js/**/*',
 				tasks: ['jshint:js', 'browserify:dev'],
@@ -138,19 +121,19 @@ module.exports = function(grunt) {
 				tasks: 'compass:dev',
 				interrupt: true
 			},
-			data: {
-				files: 'src/data/**/*',
-				tasks: 'dir2json:dev',
-				interrupt: true
-			},
 			files: {
 				files: 'src/files/**/*',
-				tasks: 'copy:filesdev',
+				tasks: 'copy:files',
 				interrupt: true
 			},
 			root: {
 				files: 'src/*.*',
-				tasks: 'copy:rootdev',
+				tasks: 'copy:root',
+				interrupt: true
+			},
+			version: {
+				files: ['package.json'],
+				tasks: 'version',
 				interrupt: true
 			}
 		}
@@ -161,20 +144,19 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-browserify');
 	grunt.loadNpmTasks('grunt-contrib-compass');
-	grunt.loadNpmTasks('grunt-dir2json');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-version');
 
 	grunt.registerTask('dev', [
-		'clean:dev',
+		'clean',
 		'jshint:js',
 		'browserify:dev',
 		'compass:dev',
-		'dir2json:dev',
-		'copy:filesdev',
-		'copy:rootdev'
+		'copy:files',
+		'copy:root'
 	]);
 
 	grunt.registerTask('default', [
@@ -184,12 +166,12 @@ module.exports = function(grunt) {
 	]);
 
 	grunt.registerTask('dist', [
-		'clean:dist',
+		'clean',
+		'version',
 		'jshint:js',
 		'browserify:dist',
 		'uglify:dist',
 		'compass:dist',
-		'dir2json:dist',
 		'copy:files',
 		'copy:root'
 	]);
