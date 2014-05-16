@@ -7,6 +7,7 @@
     "noarg": true,
     "sub": true,
     "undef": true,
+    "unused": true,
     "boss": true,
     "eqnull": true,
     "es5": false,
@@ -16,7 +17,8 @@
     "browser": true,
     "globals": {
         "$": false,
-        "d3": false
+        "d3": false,
+        "ABC": false
     },
     "smarttabs": true
 }
