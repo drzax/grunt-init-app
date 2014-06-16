@@ -1,0 +1,24 @@
+default:
+ - 'dev'
+ - 'connect'
+ - 'watch'
+
+dev:
+ - 'clean'
+ - 'jshint:js'
+ - 'browserify:dev'
+ - 'compass:dev'
+ - 'copy:files'
+ - 'copy:root'
+
+dist:
+ - 'clean'
+ - 'version'
+ - 'jshint:js'
+ - 'browserify:dist'
+ - 'uglify:dist'
+ - 'compass:dist'
+ - 'copy:files'
+ - 'copy:root'
+
+ 
